@@ -39,10 +39,10 @@ public class PageHeader {
     }
 
     public boolean isCartItemsIconOverlayExist() {
-        return driver.findElements(cartItemsNumIconOverlay).isEmpty();
+        return !driver.findElements(cartItemsNumIconOverlay).isEmpty();
     }
 
     public boolean isCartPriceTextExist() {
-        return driver.findElements(cartPriceText).isEmpty();
+        return !driver.findElements(cartPriceText).isEmpty();
     }
 }
