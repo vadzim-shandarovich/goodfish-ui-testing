@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Test Suite" parallel="tests">
+    <test preserve-order="true" name="Empty Cart" enabled="true">
+       <groups>
+           <run>
+               <include name="Empty cart on first visit"/>
+           </run>
+       </groups>
+        <classes>
+            <class name="org.example.cart.CartTests"/>
+        </classes>
+    </test>
+    <test preserve-order="true" name="Test" enabled="false">
+        <classes>
+            <class name="org.example.cart.CartTests">
+                <methods>
+                    <include name="testEmptyCartIconOverlayAndPrice"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

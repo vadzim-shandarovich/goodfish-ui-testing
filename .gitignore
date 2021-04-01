@@ -1,0 +1,15 @@
+# Git ignored files
+
+# Project resources
+resources/
+
+# Ignore all text files
+*.txt
+
+# IntelliJ
+out/
+.idea/
+*.iml
+
+### Maven ###
+target/
