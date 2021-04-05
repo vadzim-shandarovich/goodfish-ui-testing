@@ -2,7 +2,7 @@ package org.example.cart;
 
 import org.example.base.BaseTests;
 import org.example.pages.CartPage;
-import org.example.utils.ProjectURI;
+import org.example.settings.ProjectURI;
 import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -11,6 +11,13 @@ import static org.testng.Assert.assertFalse;
  * Contains different cart tests
  */
 public class CartTests extends BaseTests {
+
+    @Test(groups = "Cart tests",
+          description = "Validate cart URI")
+    public void testCartURI() {
+        homePage.clickCartIcon();
+        assertEquals(getWindowManager().getCurrentURL(), ProjectURI.BASE + ProjectURI.CART_PATH);
+    }
 
     @Test(groups = "Empty cart on first visit",
           description = "Validate cart items number and price on first visit")

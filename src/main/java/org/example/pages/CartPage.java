@@ -7,10 +7,10 @@ import org.openqa.selenium.WebDriver;
  * Represents GoodFish cart page with its interactions
  */
 public class CartPage extends PageHeader {
-    private By cartPageHeader = By.tagName("h1");
-    private By emptyCartText = By.cssSelector(".bx-sbb-empty-cart-container .item-title");
-    private By backToCatalogLink = By.linkText("Вернуться в каталог");
-    private By cartLinkedImage = By.cssSelector(".bx-sbb-empty-cart-container svg");
+    private final By cartPageHeader = By.tagName("h1");
+    private final By emptyCartText = By.cssSelector("div.bx-sbb-empty-cart-container div.item-title");
+    private final By backToCatalogLink = By.linkText("Вернуться в каталог");
+    private final By cartLinkedImage = By.cssSelector("div.bx-sbb-empty-cart-container svg");
 
     public CartPage(WebDriver driver) {
         super(driver);

@@ -9,9 +9,9 @@ import java.math.BigDecimal;
  */
 public class PageHeader {
     protected WebDriver driver;
-    private By cartIcon = By.id("bx_basket0xdXJz");
-    private By cartItemsNumIconOverlay = By.cssSelector("#bx_basket0xdXJz .total-num");
-    private By cartPriceText = By.cssSelector("#bx_basket0xdXJz .bx-basket-block-total");
+    private final By cartIcon = By.id("bx_basket0xdXJz");
+    private final By cartItemsNumIconOverlay = By.cssSelector("a#bx_basket0xdXJz div.total-num");
+    private final By cartPriceText = By.cssSelector("a#bx_basket0xdXJz div.bx-basket-block-total");
 
     public PageHeader(WebDriver driver) {
         this.driver = driver;
