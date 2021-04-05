@@ -2,15 +2,12 @@ package org.example.base;
 
 import org.example.pages.HomePage;
 import org.example.utils.CookieManager;
-import org.example.utils.ProjectURI;
+import org.example.settings.ProjectURI;
 import org.example.utils.WindowManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.BeforeGroups;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.AfterTest;
+import org.testng.annotations.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,7 +45,12 @@ public class BaseTests {
         getWindowManager().refresh();
     }
 
-    @BeforeMethod(groups = { "Empty cart on first visit" })
+    @BeforeGroups({ "Empty cart on first visit", "Catalog tests" })
+    public void chooseMinskAsCustomersCity() {
+        homePage.getTownSelectPopup().clickBigTownsMinskButton();
+    }
+
+    @BeforeMethod(groups = { "Empty cart on first visit", "Catalog tests" })
     public void goToMainPage() {
         getWindowManager().goTo(ProjectURI.BASE);
     }

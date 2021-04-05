@@ -1,5 +1,6 @@
 package org.example.utils;
 
+import org.example.settings.ProjectURI;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import java.util.Set;
