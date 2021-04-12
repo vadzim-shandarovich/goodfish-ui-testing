@@ -8,9 +8,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
 /**
- * Contains different cart tests
+ * Contains empty cart tests
  */
-public class CartTests extends BaseTests {
+public class EmptyCartTests extends BaseTests {
 
     @Test(groups = "Cart tests",
           description = "Validate cart URI")

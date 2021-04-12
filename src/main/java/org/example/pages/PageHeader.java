@@ -1,6 +1,8 @@
 package org.example.pages;
 
+import org.example.pages.popups.TownSelectPopup;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import java.math.BigDecimal;
 
@@ -9,12 +11,14 @@ import java.math.BigDecimal;
  */
 public class PageHeader {
     protected WebDriver driver;
-    private final By cartIcon = By.id("bx_basket0xdXJz");
-    private final By cartItemsNumIconOverlay = By.cssSelector("a#bx_basket0xdXJz div.total-num");
-    private final By cartPriceText = By.cssSelector("a#bx_basket0xdXJz div.bx-basket-block-total");
+    protected JavascriptExecutor jsExecutor;
+    private By cartIcon = By.id("bx_basket0xdXJz");
+    private By cartItemsNumIconOverlay = By.cssSelector("a#bx_basket0xdXJz div.total-num");
+    private By cartPriceText = By.cssSelector("a#bx_basket0xdXJz div.bx-basket-block-total");
 
     public PageHeader(WebDriver driver) {
         this.driver = driver;
+        jsExecutor = (JavascriptExecutor) driver;
     }
 
     public CartPage clickCartIcon() {
@@ -36,6 +40,10 @@ public class PageHeader {
         } else {
             return new BigDecimal(driver.findElement(cartPriceText).getText());
         }
+    }
+
+    public TownSelectPopup getTownSelectPopup() {
+        return new TownSelectPopup(driver);
     }
 
     public boolean isCartItemsIconOverlayExist() {

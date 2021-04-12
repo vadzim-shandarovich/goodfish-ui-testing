@@ -1,4 +1,4 @@
-package org.example.pages;
+package org.example.pages.popups;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -8,14 +8,12 @@ import org.openqa.selenium.WebElement;
  * Represents Town Select Popup which could appear on any page
  */
 public class TownSelectPopup {
-    private WebDriver driver;
-    private final WebElement popup;
-    private final By townSelectPopup = By.id("townSelectPopup");
-    private final By bigTownsMinskButton = By.cssSelector("div.bigTowns label[for='topLoc47']");
+    private WebElement popup;
+    private By townPopup = By.id("townSelectPopup");
+    private By bigTownsMinskButton = By.cssSelector("div.bigTowns label[for='topLoc47']");
 
     public TownSelectPopup(WebDriver driver) {
-        this.driver = driver;
-        popup = driver.findElement(townSelectPopup);
+        popup = driver.findElement(townPopup);
     }
 
     public void clickBigTownsMinskButton() {
