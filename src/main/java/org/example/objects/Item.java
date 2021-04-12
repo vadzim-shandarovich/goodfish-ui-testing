@@ -3,7 +3,7 @@ package org.example.objects;
 import java.math.BigDecimal;
 
 /**
- * Describes product item
+ * Describes GoodFish product item
  */
 public class Item {
     private String name;
