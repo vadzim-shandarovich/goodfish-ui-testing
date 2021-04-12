@@ -8,10 +8,10 @@
            </run>
        </groups>
         <classes>
-            <class name="org.example.cart.CartTests"/>
+            <class name="org.example.cart.EmptyCartTests"/>
         </classes>
     </test>
-    <test preserve-order="true" name="Catalog" enabled="true">
+    <test preserve-order="true" name="Catalog" enabled="false">
         <groups>
             <run>
                 <include name="Catalog tests"/>
@@ -33,6 +33,31 @@
                     <include name="testCategoryItemsCount"></include>
                 </methods>
             </class>
+        </classes>
+    </test>
+    <test preserve-order="true" name="Cart one test method" enabled="true">
+        <groups>
+            <run>
+                <include name="Adding to cart tests"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="org.example.cart.CartAddingTests">
+                <methods>
+                    <include name="testAddingAllItemsInCategory"></include>
+                    <include name="testAddingAllItems"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test preserve-order="true" name="Adding items to cart" enabled="false">
+        <groups>
+            <run>
+                <include name="Adding to cart tests"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="org.example.cart.CartAddingTests"/>
         </classes>
     </test>
     <test preserve-order="true" name="Test" enabled="false">

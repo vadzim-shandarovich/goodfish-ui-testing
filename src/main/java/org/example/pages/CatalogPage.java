@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
  * Represents catalog page with its interactions
  */
 public class CatalogPage extends PageHeader {
-    private final By catalogPageHeader = By.tagName("h1");
-    private final By backToMainPageLink = By.cssSelector("div#navigation a");
-    private final By categoriesLinksSet = By.cssSelector("div.bx_catalog_tile a.item-name");
-    private final By categorySubcategoryAreasSet = By.cssSelector("div.bx_catalog_tile div.item-wrap");
-    private final By categoryLinkInArea = By.cssSelector("a.item-name");
-    private final By categoryItemsCountInArea = By.tagName("span");
-    private final By subCategoryLinkSetInArea = By.cssSelector("div.item-links a");
+    private By catalogPageHeader = By.tagName("h1");
+    private By backToMainPageLink = By.cssSelector("div#navigation a");
+    private By categoriesLinksSet = By.cssSelector("div.bx_catalog_tile a.item-name");
+    private By categorySubcategoryAreasSet = By.cssSelector("div.bx_catalog_tile div.item-wrap");
+    private By categoryLinkInArea = By.cssSelector("a.item-name");
+    private By categoryItemsCountInArea = By.tagName("span");
+    private By subCategoryLinkSetInArea = By.cssSelector("div.item-links a");
 
     public CatalogPage(WebDriver driver) {
         super(driver);
@@ -42,13 +42,9 @@ public class CatalogPage extends PageHeader {
         return driver.findElement(catalogPageHeader).getText();
     }
 
-    public Set<String> getCategoriesNames() {
+    public List<String> getCategoriesNames() {
         return driver.findElements(categoriesLinksSet)
-                .stream().map(WebElement::getText).collect(Collectors.toSet());
-    }
-
-    public List<WebElement> getCategorySubcategoryAreas() {
-        return driver.findElements(categorySubcategoryAreasSet);
+                .stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     /*
@@ -95,5 +91,9 @@ public class CatalogPage extends PageHeader {
         } else {
             return itemsCount;
         }
+    }
+
+    private List<WebElement> getCategorySubcategoryAreas() {
+        return driver.findElements(categorySubcategoryAreasSet);
     }
 }

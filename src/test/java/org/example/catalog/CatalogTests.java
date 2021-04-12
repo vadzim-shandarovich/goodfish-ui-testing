@@ -70,17 +70,15 @@ public class CatalogTests extends BaseTests {
     @Test(groups = "Catalog tests",
           description = "Validate category links work correctly")
     public void testCategoryLinks() {
-        Set<String> categoriesNames;
         SoftAssert softAssert = new SoftAssert();
 
         CatalogPage catalogPage = homePage.clickCatalogBtn();
-        categoriesNames = catalogPage.getCategoriesNames();
 
         /*
          * Loop through categories names to click every category name
          * and validate right category page header
          */
-        for (String categoryName : categoriesNames) {
+        for (String categoryName : catalogPage.getCategoriesNames()) {
             try {
                 CatalogCategoryPage categoryPage = catalogPage.clickCategoryByName(categoryName);
                 softAssert.assertEquals(categoryPage.getCategoryPageHeader(),
