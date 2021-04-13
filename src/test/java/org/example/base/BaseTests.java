@@ -1,16 +1,16 @@
 package org.example.base;
 
+import org.example.pages.CatalogPage;
+import org.example.utils.CartOperations;
 import org.example.pages.HomePage;
 import org.example.utils.CookieManager;
 import org.example.settings.ProjectURI;
-import org.example.utils.PageEventListener;
 import org.example.utils.WindowManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.*;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * Sets up project base settings and implements before/after tests annotations
@@ -19,7 +19,7 @@ public class BaseTests {
     private static final String CHROME_DRIVER_PATH = "resources/drivers/chromedriver.exe";
     private static final String CHROME_PROFILE_PATH = "resources/web browsers user profiles/chrome/Profile 1";
     protected HomePage homePage;
-    protected Logger log;
+    protected CartOperations cartOperations;
     private EventFiringWebDriver driver;
 
     @BeforeTest(alwaysRun = true)
@@ -44,9 +44,6 @@ public class BaseTests {
         driver.get(ProjectURI.BASE);
 
         homePage = new HomePage(driver);
-
-        /* Instantiate logger to log necessary info */
-        log = Logger.getLogger("");
     }
 
     @BeforeGroups({ "Empty cart on first visit" })
@@ -61,6 +58,15 @@ public class BaseTests {
         homePage.getTownSelectPopup().clickBigTownsMinskButton();
     }
 
+    @BeforeGroups({ "Cart calculations tests" })
+    public void chooseMinskAndAdd5RandomItemsToCart() {
+        chooseMinskAsCustomersCity();
+        CatalogPage catalogPage = homePage.clickCatalogBtn();
+        cartOperations = new CartOperations(driver);
+        cartOperations.addRandomItemsToCart(catalogPage, 5);
+        goToMainPage();
+    }
+
     @BeforeMethod(groups = { "Empty cart on first visit", "Catalog tests" })
     public void goToMainPage() {
         getWindowManager().goTo(ProjectURI.BASE);
@@ -70,6 +76,7 @@ public class BaseTests {
     public void goToMainPageAndSimulateFirstVisit() {
         goToMainPage();
         simulateCustomerFirstVisit();
+        cartOperations = new CartOperations(driver);
     }
 
     @AfterTest(alwaysRun = true)

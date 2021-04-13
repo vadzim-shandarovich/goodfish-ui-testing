@@ -1,5 +1,6 @@
 package org.example.cart;
 
+import org.example.base.BaseTests;
 import org.example.exceptions.NoSuchCategoryException;
 import org.example.exceptions.NoSuchItemException;
 import org.example.objects.Item;
@@ -17,7 +18,7 @@ import static org.testng.Assert.fail;
 /**
  * Contains tests on adding items to cart
  */
-public class CartAddingTests extends CartFilling {
+public class CartAddingTests extends BaseTests {
 
     @Test(groups = { "Adding to cart tests", "Smoke" },
           description = "Validate adding to cart random category item (items count, name, price...)")
@@ -28,7 +29,7 @@ public class CartAddingTests extends CartFilling {
         SoftAssert softAssert = new SoftAssert();
 
         CatalogPage catalogPage = homePage.clickCatalogBtn();
-        categoryItem = addRandomItemsToCart(catalogPage, ITEMS_COUNT).get(0);
+        categoryItem = cartOperations.addRandomItemsToCart(catalogPage, ITEMS_COUNT).get(0);
         CartPage cartPage = catalogPage.clickCartIcon();
         cartItems = cartPage.getCartItemsInfo();
 
@@ -50,7 +51,7 @@ public class CartAddingTests extends CartFilling {
         SoftAssert softAssert = new SoftAssert();
 
         CatalogPage catalogPage = homePage.clickCatalogBtn();
-        categoryItems = addRandomItemsToCart(catalogPage, ITEMS_COUNT);
+        categoryItems = cartOperations.addRandomItemsToCart(catalogPage, ITEMS_COUNT);
         CartPage cartPage = catalogPage.clickCartIcon();
         cartItems = cartPage.getCartItemsInfo();
 
@@ -70,7 +71,7 @@ public class CartAddingTests extends CartFilling {
         SoftAssert softAssert = new SoftAssert();
 
         CatalogPage catalogPage = homePage.clickCatalogBtn();
-        categoryItems = addRandomItemsToCart(catalogPage, ITEMS_COUNT);
+        categoryItems = cartOperations.addRandomItemsToCart(catalogPage, ITEMS_COUNT);
         CartPage cartPage = catalogPage.clickCartIcon();
         cartItems = cartPage.getCartItemsInfo();
 
@@ -93,10 +94,12 @@ public class CartAddingTests extends CartFilling {
 
         /* Choose random category to add its all available items to cart */
         categoriesNames = catalogPage.getCategoriesNames();
-        randomCategoryName = categoriesNames.get(
-                ThreadLocalRandom.current().nextInt(categoriesNames.size()));
+        do {
+            randomCategoryName = categoriesNames.get(
+                    ThreadLocalRandom.current().nextInt(categoriesNames.size()));
 
-        categoryItems = addAllCategoryItemsToCart(catalogPage, randomCategoryName);
+            categoryItems = cartOperations.addAllCategoryItemsToCart(catalogPage, randomCategoryName);
+        } while (categoryItems.isEmpty());
 
         CartPage cartPage = catalogPage.clickCartIcon();
 
@@ -124,7 +127,7 @@ public class CartAddingTests extends CartFilling {
 
         /* Loop through categories to add its all available items to cart */
         for (String categoryName : categoriesNames) {
-            allItems.addAll(addAllCategoryItemsToCart(catalogPage, categoryName));
+            allItems.addAll(cartOperations.addAllCategoryItemsToCart(catalogPage, categoryName));
         }
         CartPage cartPage = catalogPage.clickCartIcon();
 
