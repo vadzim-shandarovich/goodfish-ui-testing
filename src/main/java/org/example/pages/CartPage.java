@@ -21,7 +21,13 @@ public class CartPage extends PageHeader {
     private By cartItemRowsSet = By.className("basket-items-list-item-container");
     private By itemNameInRow = By.cssSelector("span[data-entity='basket-item-name']");
     private By itemPriceInRow = By.cssSelector("span[id^='basket-item-price']");
+    private By itemPriceTitleInRow = By.className("basket-item-price-title");
     private By itemAmountFieldInRow = By.cssSelector("input.basket-item-amount-filed");
+    private By amountFieldDescription = By.className("basket-item-amount-field-description");
+    private By amountButtonMinusInRow = By.className("basket-item-amount-btn-minus");
+    private By amountButtonPlusInRow = By.className("basket-item-amount-btn-plus");
+    private By itemSumPriceInRow = By.cssSelector("span[id^='basket-item-sum-price']");
+    private By totalPrice = By.className("basket-coupon-block-total-price-current");
     private By checkoutButton = By.cssSelector("button.basket-btn-checkout");
 
     /* Last visible item row before 30 more rows download to page (in case more 30 items) */
@@ -49,6 +55,8 @@ public class CartPage extends PageHeader {
 
         for (WebElement cartItemWE : getCartItemRowsSet()) {
             String priceStr;
+            String priceTitleStr;
+            String sumPriceStr;
             Item cartItem = new Item();
             cartItem.setName(cartItemWE.findElement(itemNameInRow).getText());
 
@@ -56,8 +64,15 @@ public class CartPage extends PageHeader {
             priceStr = cartItemWE.findElement(itemPriceInRow).getText();
             cartItem.setPrice(new BigDecimal(priceStr.split(" ")[0]));
 
+            priceTitleStr = cartItemWE.findElement(itemPriceTitleInRow).getText();
+            cartItem.setQuantityUnit(new BigDecimal(priceTitleStr.split(" ")[2]));
+            cartItem.setQuantityMeasure(priceTitleStr.split(" ")[3]);
+
             cartItem.setAmount(new BigDecimal(
                     cartItemWE.findElement(itemAmountFieldInRow).getAttribute("value")));
+
+            sumPriceStr = cartItemWE.findElement(itemSumPriceInRow).getText();
+            cartItem.setSumPrice(new BigDecimal(sumPriceStr.split(" ")[0]));
             cartItemsList.add(cartItem);
         }
         return cartItemsList;

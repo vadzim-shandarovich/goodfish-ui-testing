@@ -8,7 +8,10 @@ import java.math.BigDecimal;
 public class Item {
     private String name;
     private BigDecimal price;
+    private BigDecimal quantityUnit;
+    private String quantityMeasure; // examples: кг, шт
     private BigDecimal amount;
+    private BigDecimal sumPrice;
 
     @Override
     public boolean equals(Object o) {
@@ -42,8 +45,20 @@ public class Item {
         return price;
     }
 
+    public BigDecimal getQuantityUnit() {
+        return quantityUnit;
+    }
+
+    public String getQuantityMeasure() {
+        return quantityMeasure;
+    }
+
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public BigDecimal getSumPrice() {
+        return sumPrice;
     }
 
     public void setName(String name) {
@@ -54,7 +69,19 @@ public class Item {
         this.price = price;
     }
 
+    public void setQuantityUnit(BigDecimal quantityUnit) {
+        this.quantityUnit = quantityUnit;
+    }
+
+    public void setQuantityMeasure(String quantityMeasure) {
+        this.quantityMeasure = quantityMeasure;
+    }
+
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public void setSumPrice(BigDecimal sumPrice) {
+        this.sumPrice = sumPrice;
     }
 }
