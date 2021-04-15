@@ -17,14 +17,14 @@ I have not developed all possible test scenarios. But even that amount of scenar
 * **Maven and its Surefire plugin** - to download the project dependency libraries, run project and generate test report
 
 
-## How to run project:
+## How to run:
 
 Download project to your local machine. Put chromedriver.exe into resources\drivers\ subfolder.
 Open up a terminal and move to the project. Run the maven test command:
-`mvn test`
+`mvn test`.
 Test report is generated automatically by surefire-plugin after tests running. Look for report in the following folder:
-target\surefire-reports\
+target\surefire-reports\.
 
-You may configure tests using testng.xml file in main project folder.
+You may configure tests using testng.xml file in main project directory.
 
 *In this project I did not use remote driver and Selenium Grid for easy project configuration and run possibility.*
