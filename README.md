@@ -10,11 +10,15 @@ I have not developed all possible test scenarios. But even that amount of scenar
 2. Some catalog category links names are different from category header name. So if you remember category header name you may not find it in catalog.
 
 
-## I used following tools in my project:
+## I used following tools for project:
 
 * **Selenium WebDriver** - to automate web application for testing purposes
 * **TestNG** - to run tests using flexible configuration
-* **Maven and its Surefire plugin** - to download the project dependency libraries, run project and generate test report
+* **Maven** and its **Surefire plugin** - to download the project dependency libraries, run project and generate test report
+
+I also used **Page Object model** design pattern. Web pages in my project are represented as classes, and the various elements on the page are defined as 
+variables on the class. All possible user interactions are implemented as methods.
+Automated tests are situated separately and may use different pages elements and its interactions.
 
 
 ## How to run:
@@ -27,4 +31,4 @@ target\surefire-reports\.
 
 You may configure tests using testng.xml file in main project directory.
 
-*In this project I did not use remote driver and Selenium Grid for easy project configuration and run possibility.*
+*In this project I have not used RemoteWebDriver and Selenium Grid for easy project configuration and run possibility.*
