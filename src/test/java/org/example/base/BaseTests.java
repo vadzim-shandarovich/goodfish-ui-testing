@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * Sets up project base settings and implements before/after tests annotations
@@ -20,6 +21,7 @@ public class BaseTests {
     private static final String CHROME_PROFILE_PATH = "resources/web browsers user profiles/chrome/Profile 1";
     protected HomePage homePage;
     protected CartOperations cartOperations;
+    protected Logger log;
     private EventFiringWebDriver driver;
 
     @BeforeTest(alwaysRun = true)
@@ -44,6 +46,9 @@ public class BaseTests {
         driver.get(ProjectURI.BASE);
 
         homePage = new HomePage(driver);
+
+        /* Instantiate logger to log necessary info */
+        log = Logger.getLogger("");
     }
 
     @BeforeGroups({ "Empty cart on first visit" })
@@ -60,14 +65,14 @@ public class BaseTests {
 
     @BeforeGroups({ "Cart calculations tests" })
     public void chooseMinskAndAdd5RandomItemsToCart() {
+        final int ITEMS_COUNT = 5;
         chooseMinskAsCustomersCity();
         CatalogPage catalogPage = homePage.clickCatalogBtn();
         cartOperations = new CartOperations(driver);
-        cartOperations.addRandomItemsToCart(catalogPage, 5);
-        goToMainPage();
+        cartOperations.addRandomItemsToCart(catalogPage, ITEMS_COUNT);
     }
 
-    @BeforeMethod(groups = { "Empty cart on first visit", "Catalog tests" })
+    @BeforeMethod(groups = { "Empty cart on first visit", "Catalog tests", "Cart calculations tests" })
     public void goToMainPage() {
         getWindowManager().goTo(ProjectURI.BASE);
     }

@@ -1,10 +1,17 @@
 package org.example.pages;
 
+import org.example.exceptions.NoSuchItemException;
 import org.example.objects.Item;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Represents GoodFish cart page with its interactions
@@ -27,6 +34,7 @@ public class CartPage extends PageHeader {
     private By amountButtonMinusInRow = By.className("basket-item-amount-btn-minus");
     private By amountButtonPlusInRow = By.className("basket-item-amount-btn-plus");
     private By itemSumPriceInRow = By.cssSelector("span[id^='basket-item-sum-price']");
+    private By deleteIconInRow = By.className("basket-item-block-actions");
     private By totalPrice = By.className("basket-coupon-block-total-price-current");
     private By checkoutButton = By.cssSelector("button.basket-btn-checkout");
 
@@ -45,6 +53,88 @@ public class CartPage extends PageHeader {
     public CatalogPage clickCartLinkedImage() {
         driver.findElement(cartLinkedImage).click();
         return new CatalogPage(driver);
+    }
+
+    /*
+     * Returns true if item amount was changed by clicking plus button.
+     * Returns false if maximum amount is already got
+     */
+    public boolean clickAmountButtonPlus(String itemName) throws NoSuchItemException {
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(10))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(StaleElementReferenceException.class);
+
+        Optional<WebElement> pickedItem = getCartItemRowsSet()
+                .parallelStream().filter(e -> e.findElement(itemNameInRow).getText().equals(itemName))
+                .findAny();
+
+        if (pickedItem.isPresent()) {
+            pickedItem.get().findElement(amountButtonPlusInRow).click();
+
+            /*
+             * TimeoutException in this context means that amount was not changed
+             * i.e. maximum is got
+             */
+            try {
+                /*
+                 * Cart item row is deleted and inserted again during amount item changing
+                 * So we have to wait this row presence before interacting with it again
+                 */
+                wait.until(ExpectedConditions.stalenessOf(pickedItem.get()));
+                return true;
+            } catch (TimeoutException e) {
+                return false;
+            }
+        } else {
+            throw new NoSuchItemException("No such item to click amount button plus");
+        }
+    }
+
+    public void clickDeleteIcon(String itemName) throws NoSuchItemException {
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(10))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(StaleElementReferenceException.class);
+
+        List<WebElement> itemList = getCartItemRowsSet();
+
+        Optional<WebElement> pickedItem = getCartItemRowsSet()
+                .parallelStream().filter(e -> e.findElement(itemNameInRow).getText().equals(itemName))
+                .findAny();
+
+        if (pickedItem.isPresent()) {
+            pickedItem.get().findElement(deleteIconInRow).click();
+
+            /*
+             * Cart item row is deleted as follows:
+             * exactly the same item is added before current (get element and wait it invisibility)
+             * current item is deleted (wait for staleness of this element)
+             * there are some calculations in JS
+             * new added item is deleted
+             */
+            wait.until(ExpectedConditions.stalenessOf(pickedItem.get()));
+
+            List<WebElement> extraItemInList = getCartItemRowsSet();
+            extraItemInList.removeAll(itemList);
+            if (extraItemInList.size() == 1) {
+                wait.until(ExpectedConditions.invisibilityOf(extraItemInList.get(0)));
+            }
+        } else {
+            throw new NoSuchItemException("No such item to click delete icon");
+        }
+    }
+
+    public BigDecimal getCartItemAmount(String itemName) throws NoSuchItemException {
+        Optional<WebElement> pickedItem = getCartItemRowsSet()
+                .parallelStream().filter(e -> e.findElement(itemNameInRow).getText().equals(itemName))
+                .findAny();
+        if (pickedItem.isPresent()) {
+            return new BigDecimal(
+                    pickedItem.get().findElement(itemAmountFieldInRow).getAttribute("value"));
+        } else {
+            throw new NoSuchItemException("No such item to get amount");
+        }
     }
 
     /*
@@ -72,10 +162,17 @@ public class CartPage extends PageHeader {
                     cartItemWE.findElement(itemAmountFieldInRow).getAttribute("value")));
 
             sumPriceStr = cartItemWE.findElement(itemSumPriceInRow).getText();
-            cartItem.setSumPrice(new BigDecimal(sumPriceStr.split(" ")[0]));
+            cartItem.setSumPrice(new BigDecimal(
+                    sumPriceStr.split(" р")[0].replace(" ", "")));
             cartItemsList.add(cartItem);
         }
         return cartItemsList;
+    }
+
+    public List<String> getCartItemsNames() {
+        return getCartItemRowsSet()
+                .parallelStream()
+                .map(e -> e.findElement(itemNameInRow).getText()).collect(Collectors.toList());
     }
 
     public String getCartPageHeader() {
@@ -84,6 +181,12 @@ public class CartPage extends PageHeader {
 
     public String getEmptyCartText() {
         return driver.findElement(emptyCartText).getText();
+    }
+
+    public BigDecimal getTotalPrice() {
+        String totalPriceStr = driver.findElement(totalPrice).getText();
+        return new BigDecimal(
+                totalPriceStr.split(" р")[0].replace(" ", ""));
     }
 
     /*
